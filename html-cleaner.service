@@ -1,0 +1,13 @@
+[Unit]
+Description=HTML Cleaner Service
+After=network.target
+
+[Service]
+User=www-data
+Group=www-data
+WorkingDirectory=/var/www/html-cleaner
+Environment="PATH=/var/www/html-cleaner/venv/bin"
+ExecStart=/var/www/html-cleaner/venv/bin/gunicorn --workers 3 --bind unix:html-cleaner.sock -m 007 main:app
+
+[Install]
+WantedBy=multi-user.target 

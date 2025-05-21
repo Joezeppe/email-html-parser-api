@@ -1,0 +1,131 @@
+<!-- @format -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HTML Cleaner</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet" />
+    <style>
+      .markdown-preview {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          "Helvetica Neue", Arial, sans-serif;
+      }
+      .markdown-preview h1 {
+        font-size: 2em;
+        margin: 0.67em 0;
+      }
+      .markdown-preview h2 {
+        font-size: 1.5em;
+        margin: 0.75em 0;
+      }
+      .markdown-preview h3 {
+        font-size: 1.17em;
+        margin: 0.83em 0;
+      }
+      .markdown-preview p {
+        margin: 1em 0;
+      }
+      .markdown-preview ul {
+        list-style-type: disc;
+        margin: 1em 0;
+        padding-left: 2em;
+      }
+      .markdown-preview ol {
+        list-style-type: decimal;
+        margin: 1em 0;
+        padding-left: 2em;
+      }
+      .markdown-preview blockquote {
+        border-left: 4px solid #e5e7eb;
+        padding-left: 1em;
+        margin: 1em 0;
+        color: #4b5563;
+      }
+      .markdown-preview code {
+        background-color: #f3f4f6;
+        padding: 0.2em 0.4em;
+        border-radius: 3px;
+        font-family: monospace;
+      }
+      .markdown-preview pre {
+        background-color: #f3f4f6;
+        padding: 1em;
+        border-radius: 4px;
+        overflow-x: auto;
+      }
+    </style>
+  </head>
+  <body class="bg-gray-100 min-h-screen">
+    <div class="container mx-auto px-4 py-8">
+      <h1 class="text-3xl font-bold text-center mb-8 text-gray-800">
+        HTML Cleaner
+      </h1>
+
+      <div class="max-w-4xl mx-auto bg-white rounded-lg shadow-md p-6">
+        {% if error %}
+        <div
+          class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+          {{ error }}
+        </div>
+        {% endif %}
+
+        <form method="POST" action="/clean" class="space-y-4">
+          <div>
+            <label
+              for="html"
+              class="block text-sm font-medium text-gray-700 mb-2"
+              >Paste your HTML here:</label
+            >
+            <textarea
+              id="html"
+              name="html"
+              rows="10"
+              class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+{{ request.form.get('html', '') }}</textarea
+            >
+          </div>
+
+          <div class="flex justify-center">
+            <button
+              type="submit"
+              class="bg-indigo-600 text-white px-6 py-2 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+              Clean HTML
+            </button>
+          </div>
+        </form>
+
+        {% if cleaned_text %}
+        <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <h2 class="text-xl font-semibold mb-4 text-gray-800">
+              Raw Markdown:
+            </h2>
+            <div class="bg-gray-50 p-4 rounded-md border border-gray-200">
+              <pre class="whitespace-pre-wrap text-sm text-gray-700">
+{{ cleaned_text }}</pre
+              >
+            </div>
+          </div>
+          <div>
+            <h2 class="text-xl font-semibold mb-4 text-gray-800">Preview:</h2>
+            <div
+              class="bg-gray-50 p-4 rounded-md border border-gray-200 markdown-preview">
+              {{ rendered_html|safe }}
+            </div>
+          </div>
+        </div>
+        {% endif %}
+      </div>
+
+      <div class="mt-8 text-center text-sm text-gray-600">
+        <p>API Endpoint: POST /api/clean</p>
+        <p class="mt-2">Content-Type: application/json</p>
+        <p class="mt-2">Body: {"html": "your html content"}</p>
+      </div>
+    </div>
+  </body>
+</html>

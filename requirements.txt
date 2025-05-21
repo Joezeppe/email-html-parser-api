@@ -1,0 +1,4 @@
+flask==3.0.2
+html2text==2020.1.16
+gunicorn==21.2.0
+markdown==3.5.2 
