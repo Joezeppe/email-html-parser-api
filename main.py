@@ -8,6 +8,11 @@ from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
 
+# Configure Flask for large file uploads
+app.config['MAX_CONTENT_LENGTH'] = 50 * 1024 * 1024  # 50MB in bytes
+app.config['MAX_CONTENT_PATH'] = None  # No path length limit
+app.config['UPLOAD_FOLDER'] = '/tmp'  # Temporary storage for uploads
+
 def clean_email_html(html):
     if not isinstance(html, str):
         return ""
